@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soil Type Classifier</title>
+    <style>
+        /* General styling for the body */
+        body {
+            font-family: 'Arial', sans-serif;
+            /* background-color: #f4f4f4;  */
+            margin: 0;
+            padding: 0;
+            background-image: url('imagee/images.jpg'); /* Updated to use a local image */
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        /* Main content container */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 40px;
+            /* background-color: rgba(255, 255, 255, 0.9);  */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Title */
+        h1 {
+            color: #3bb43f; /* Earthy green */
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Georgia', serif;
+        }
+
+        h2 {
+            color: #8B4513; /* Earthy brown */
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Upload form styling */
+        #uploadForm {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        #file {
+            font-size: 1.1rem;
+            padding: 10px;
+            background-color: #FFF3B0; /* Light yellow, warm color */
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            color: #555;
+            margin: 15px 0;
+            width: 60%;
+        }
+
+        button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            font-size: 1.2rem;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        /* Prediction result styling */
+        #result {
+            color: #333;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Small screen responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+            
+            #file {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1>Soil Type Classifier</h1>
+        <p>Upload an image of soil to predict its type.</p>
+        
+        <!-- Form to upload an image -->
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" id="file" accept="image/*" required><br>
+            <button type="submit">Upload</button>
+        </form>
+
+        <h2>Prediction Result:</h2>
+        <p id="result">No prediction yet</p>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Create a FormData object and append the file
+            var formData = new FormData();
+            formData.append('file', document.getElementById('file').files[0]);
+
+            // Send the image to the server
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.predicted_soil_type) {
+                    document.getElementById('result').textContent = 'Predicted Soil Type: ' + data.predicted_soil_type;
+                } else {
+                    document.getElementById('result').textContent = 'Error: ' + data.error;
+                }
+            })
+            .catch(error => {
+                document.getElementById('result').textContent = 'Error occurred during prediction.';
+            });
+        });
+    </script>
+
+</body>
+</html>

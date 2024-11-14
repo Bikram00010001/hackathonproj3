@@ -1,0 +1,33 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Irrigation Time Calculator</title>
+  <script src="scritp.js"></script>
+<script src="vfdlj.java"></script>
+</head>
+<body>
+
+
+  <h1>Irrigation Time Calculator</h1>
+  <form>
+    <label for="fieldArea">Field Area (square meters):</label>
+    <input type="number" id="fieldArea" required>
+    <br>
+    <label for="outletDiameter">Water Outlet Diameter (meters):</label>
+    <input type="number" id="outletDiameter" step="0.01" required>
+    <br>
+    <button type="button" onclick="calculateIrrigationTime()">Calculate</button>
+  </form>
+  <p id="result"></p>
+  <script src="calculator.js"></script>
+  <form id="searchForm">
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button type="submit">Search</button>
+</form>
+<div id="searchResults"></div>
+
+
+  
+</body>
+</html>
